@@ -2,19 +2,25 @@ import Head from '../models/SubHead.js';
 
 // Use default storage
 export const createSubHead = async (req, res) => {
-    const { headName, headCode, companyName, companyCode, subHeadName,subHeadCode, description } = req.body;
-
-    const newHead = new Head({ headName, subHeadCode,subHeadName, headCode, companyName, companyCode, description });
-    console.log("data ",  newHead);
+    const { headName, headCode, companyName, companyCode, subHeadName, subHeadCode, description } = req.body;
 
     try {
+        // Create a new Head instance
+        const newHead = new Head({ headName, subHeadCode, subHeadName, headCode, companyName, companyCode, description });
+
+        // Attempt to save the new head to the database
         const savedHead = await newHead.save();
         res.status(201).json(savedHead);
     } catch (error) {
+        if (error.code === 11000) { // Duplicate key error
+            return res.status(409).json({ error: 'subHeadName already exists. Please use a unique subHeadName.' });
+        }
         console.error('Error creating head:', error);
         res.status(500).json({ error: 'Error saving head' });
     }
-  };
+};
+
+
 
 // Get all companies
 export const getAllSubHead = async (req, res) => {

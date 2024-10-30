@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import companyRoutes from './routes/companyRoutes.js'
 import headRoutes from './routes/head.js'
 import subHeadRoutes from './routes/subHead.js'
+import accountRoutes from './routes/accountHead.js'
 import cors from 'cors';
 
 // Configure environment variables
@@ -35,11 +36,12 @@ const connect = async () => {
   
   // MongoDB connection 
   connect();
-    
+
 // Define a simple route
 app.use('/api/companies', companyRoutes);
 app.use('/api/heads', headRoutes);
 app.use('/api/subHead',  subHeadRoutes);
+app.use('/api/accountHead', accountRoutes)
 
 
 app.get('/', (req, res) => {
