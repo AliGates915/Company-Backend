@@ -13,7 +13,7 @@ dotenv.config();
 // Initialize Express
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:3000'], // Replace with your frontend origins
+    origin: ['http://localhost:3000', "https://company-frontend-three.vercel.app"], // Replace with your frontend origins
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     // credentials: true, 
   }));
