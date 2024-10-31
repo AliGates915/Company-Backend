@@ -1,17 +1,32 @@
 // controllers/companyController.js
 import CompanyInfo from '../models/CompanyInfo.js';
-// Use default storage
+
 export const createCompany = async (req, res) => {
     try {
-      console.log('Request body:', req.body);
-      const companyInfo = new CompanyInfo(req.body);
-      await companyInfo.save();
-      res.status(201).json({ message: 'Company created successfully!' });
+        console.log('Request body:', req.body); // Log the request body to debug
+
+        const companyInfo = new CompanyInfo(req.body);
+
+        // Attempt to save the company info to the database
+        const savedCompany = await companyInfo.save();
+
+        // If saved successfully, return a success response
+        console.log('Company created successfully:', savedCompany); // Log the saved company info
+        return res.status(201).json({ message: 'Company created successfully!', company: savedCompany });
+
     } catch (error) {
-      console.error('Error creating company:', error);
-      res.status(400).json({ message: 'Error creating company', error });
+        // Check for validation errors
+        if (error.name === 'ValidationError') {
+            console.error('Validation Error:', error.errors); // Log validation errors
+            return res.status(400).json({ message: 'Validation Error', errors: error.errors });
+        }
+
+        // Log any other error
+        console.error('Error creating company:', error); // Log the error for debugging
+        return res.status(500).json({ message: 'Error creating company', error: error.message }); // Use 500 for server errors
     }
-  };
+};
+
 
 // Get all companies
 export const getAllCompanies = async (req, res) => {

@@ -7,8 +7,8 @@ export const createAccountHead = async (req, res) => {
     try {
         const accountHead = new AccountHead(req.body);
         const savedAccountHead = await accountHead.save();
-        res.status(201).json(savedAccountHead);
-        res.status(201).json({ message: 'Account Head created successfully!' });
+        res.status(201).json({ data: savedAccountHead, message: 'Account Head created successfully!' });
+
     } catch (error) {
         res.status(400).json({ message: error.message });
     }

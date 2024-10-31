@@ -3,12 +3,14 @@ import mongoose from 'mongoose';
 const companyInfoSchema = new mongoose.Schema({
 
   companyName: { type: String, required: true, unique: true },
-  companyCode: { type: String, required: true , unique: true},
-  logo: { type: String  }, // Adjust if you're storing images differently
+  companyCode: { type: String, required: true },
+  logo: { type: String,  }, // Adjust if you're storing images differently
   address: { type: String, required: true },
   telephone: { type: String, required: true },
   mobile: { type: String,  },
-  fax: { type: String, required: true },
+  city: { type: String},
+  destination: {type : String},
+  fax: { type: String, },
   email: { type: String, required: true },
   contactPerson: { type: String },
   ntn: { type: String, required: true },
