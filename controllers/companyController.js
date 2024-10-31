@@ -3,30 +3,28 @@ import CompanyInfo from '../models/CompanyInfo.js';
 
 export const createCompany = async (req, res) => {
     try {
-        console.log('Request body:', req.body); // Log the request body to debug
-
-        const companyInfo = new CompanyInfo(req.body);
-
-        // Attempt to save the company info to the database
-        const savedCompany = await companyInfo.save();
-
-        // If saved successfully, return a success response
-        console.log('Company created successfully:', savedCompany); // Log the saved company info
-        return res.status(201).json({ message: 'Company created successfully!', company: savedCompany });
-
-    } catch (error) {
-        // Check for validation errors
-        if (error.name === 'ValidationError') {
-            console.error('Validation Error:', error.errors); // Log validation errors
-            return res.status(400).json({ message: 'Validation Error', errors: error.errors });
+        // Validate companyCode
+        if (!req.body.companyCode) {
+          return res.status(400).json({ message: 'companyCode is required.' });
         }
-
-        // Log any other error
-        console.error('Error creating company:', error); // Log the error for debugging
-        return res.status(500).json({ message: 'Error creating company', error: error.message }); // Use 500 for server errors
-    }
-};
-
+    
+        // Check if the companyName already exists
+        const existingCompany = await CompanyInfo.findOne({ companyName: req.body.companyName });
+        if (existingCompany) {
+          return res.status(400).json({ message: 'Company already exists.' });
+        }
+    
+        const newCompany = new CompanyInfo(req.body);
+        const savedCompany = await newCompany.save();
+        
+        console.log('Success created!');
+        res.status(201).json(savedCompany);
+      } catch (error) {
+        console.error(error); // Log error details for debugging
+        res.status(400).json({ message: error.message });
+      }
+  };
+  
 
 // Get all companies
 export const getAllCompanies = async (req, res) => {
