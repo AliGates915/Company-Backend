@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 // Create a new Account Head
 export const createAccountHead = async (req, res) => {
     try {
+        console.log("data", req.body);
+        
         const accountHead = new AccountHead(req.body);
         const savedAccountHead = await accountHead.save();
         res.status(201).json({ data: savedAccountHead, message: 'Account Head created successfully!' });
